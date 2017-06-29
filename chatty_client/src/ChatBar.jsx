@@ -7,7 +7,6 @@ class ChatBar extends Component {
     if (event.key === 'Enter') {
       this.props.addNewMessage(user, content);
       this.refs.content.value = '';
-      this.refs.username.value = '';
     }
   }
   render() {
