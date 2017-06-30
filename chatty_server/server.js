@@ -5,7 +5,9 @@ const WebSocket = require('ws');
 const app = express();
 
 const server = http.createServer(app);
-const wss = new WebSocket.Server({server});
+const wss = new WebSocket.Server({
+  server
+});
 
 const uuidv1 = require('uuid/v1');
 
@@ -14,20 +16,29 @@ const uuidv1 = require('uuid/v1');
 // the ws parameter in the callback.
 wss.broadcast = function broadcast(data) {
   wss.clients.forEach(function each(client) {
-      client.send(data);
-      console.log('socket open');
+    client.send(data);
   })
 }
 
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
-    const incomingMessage = JSON.parse(message);
-    const newMessage = {
-      id: uuidv1(),
-      username: incomingMessage.username,
-      content: incomingMessage.content
-    };
-    wss.broadcast(JSON.stringify(newMessage))
+    const msgObj = JSON.parse(message);
+    switch (msgObj.type) {
+      case "postMessage":
+        msgObj.type = "incomingMessage",
+        msgObj.id = uuidv1(),
+        console.log(msgObj)
+        wss.broadcast(JSON.stringify(msgObj))
+        break;
+      case "postNotification":
+        msgObj.type = "incomingNotification",
+        msgObj.id = uuidv1(),        
+        console.log(msgObj)
+        wss.broadcast(JSON.stringify(msgObj));
+        break;
+      default:
+        throw new Error("Unknown event type " + data.type);
+    }
   })
   ws.on('close', () => console.log('Client disconnected'));
 });
