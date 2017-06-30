@@ -20,27 +20,43 @@ wss.broadcast = function broadcast(data) {
   })
 }
 
+let count = 0;
 wss.on('connection', function connection(ws) {
+  count += 1;
+  console.log(count);
+  console.log('Client connected');
+  wss.broadcast(JSON.stringify({
+    type: 'userCount',
+    count
+  }));
   ws.on('message', function incoming(message) {
     const msgObj = JSON.parse(message);
     switch (msgObj.type) {
       case "postMessage":
         msgObj.type = "incomingMessage",
-        msgObj.id = uuidv1(),
-        console.log(msgObj)
+          msgObj.id = uuidv1(),
+          console.log(msgObj)
         wss.broadcast(JSON.stringify(msgObj))
         break;
       case "postNotification":
         msgObj.type = "incomingNotification",
-        msgObj.id = uuidv1(),        
-        console.log(msgObj)
+          msgObj.id = uuidv1(),
+          console.log(msgObj)
         wss.broadcast(JSON.stringify(msgObj));
         break;
       default:
         throw new Error("Unknown event type " + data.type);
     }
   })
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => {
+    count -= 1;
+    console.log(count);
+    console.log('Client disconnected');
+    wss.broadcast(JSON.stringify({
+      type: 'userCount',
+      count
+    }));
+  });
 });
 
 server.listen(3001, function listening() {

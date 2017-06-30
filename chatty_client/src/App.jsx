@@ -8,7 +8,8 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: { name: 'Bob' },
-      messages: []
+      messages: [],
+      count: 0
     };
     this.addNewMessage = this.addNewMessage.bind(this);
     this.userNotification = this.userNotification.bind(this);
@@ -38,7 +39,6 @@ class App extends Component {
       const data = JSON.parse(e.data);
       switch (data.type) {
         case "incomingMessage":
-          // console.log(data)
           const messages = this.state.messages.concat(data);
           this.setState({ messages: messages })
           break;
@@ -46,6 +46,10 @@ class App extends Component {
           const notifications = this.state.messages.concat(data);
           console.log('it works')
           this.setState({ messages: notifications })
+          break;
+        case "userCount":
+          const count = this.state.count
+          this.setState({count: data.count})
           break;
         default:
           throw new Error("Unknown event type " + data.type);
@@ -62,7 +66,7 @@ class App extends Component {
       <div>
         <ChatBar currentUser={this.state.currentUser} addNewMessage={this.addNewMessage} userNotification={this.userNotification} />
         <MessageList messages={this.state.messages} />
-        <Navbar />
+        <Navbar count={this.state.count}/>
       </div>
     );
   }
