@@ -18,6 +18,9 @@ class App extends Component {
 
   addNewMessage(username, content) {
     const newMessage = { type: "postMessage", username: username, content: content };
+    if (this.state.currentUser.name !== username) {
+      this.userNotification(username);
+    }
     this.socket.send(JSON.stringify(newMessage))
   }
 
