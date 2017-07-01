@@ -1,45 +1,25 @@
-React Boilerplate
-=====================
+# ChattyApp Project
 
-A minimal and light dev environment for ReactJS.
+A lightweight slack clone that incorporates skills such as ReactJS, websockets and Express.
 
-### Usage
+## Final Product
+!["First page"](https://github.com/donaldma/chattyApp/blob/master/docs/First%20page.png)
+!["2 users online"](https://github.com/donaldma/chattyApp/blob/master/docs/2%20users.png)
+!["user name change/messages"](https://github.com/donaldma/chattyApp/blob/master/docs/2%20users%20messages.png)
 
-Clone the boilerplate and create your own git repo.
+## Getting Started
 
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
-```
+1. Clone this repository into your local machine.
+2. Install dependencies using the `npm install` command in both client and server directories.
+3. Start the web server using the `npm start` command in both the client and server directories. The app will be served at <http://localhost:300/>.
+4. Go to <http://localhost:3000/> in your browser.
+5. Screenshots included in docs directory and also provided under the 'Final Product' section.
 
-Install the dependencies and start the server.
+## Dependencies
 
-```
-npm install
-npm start
-open http://localhost:3000
-```
-
-### Static Files
-
-You can store static files like images, fonts, etc in the `build` folder.
-
-For example, if you copy a file called my_image.png into the build folder you can access it using `http://localhost:3000/build/my_image.png`.
-
-### Linting
-
-This boilerplate project includes React ESLint configuration.
-
-```
-npm run lint
-```
-
-### Dependencies
-
-* React
-* Webpack
-* [babel-loader](https://github.com/babel/babel-loader)
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+- Express
+- Node 5.10.x or above
+- React
+- Node-uuid
+- ws
+- Webpack
