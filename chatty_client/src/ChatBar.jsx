@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 
 class ChatBar extends Component {
+
+//Handles the 'enter' key press for the messages 
+
   handleMessage = (event) => {
     const content = this.refs.content.value;
     const newUser = this.refs.username.value;
@@ -9,9 +12,12 @@ class ChatBar extends Component {
       this.refs.content.value = '';
     }
   }
+
+//Handles the 'enter' key press for the users name change
+
   handleUser = (event) => {
-    const content = this.refs.content.value;
-    const newUser = this.refs.username.value; 
+    let content = this.refs.content.value;
+    let newUser = this.refs.username.value;
     if (event.key === 'Enter') {
       this.props.userNotification(newUser);
     }

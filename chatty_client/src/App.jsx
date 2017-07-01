@@ -3,19 +3,25 @@ import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
 import Navbar from './Navbar.jsx';
 
+//sets intial states
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       currentUser: { name: 'Bob' },
       messages: [],
-      count: 0
+      count: 0,
     };
+
+// binds the functions addNewMessage and userNotification
+
     this.addNewMessage = this.addNewMessage.bind(this);
     this.userNotification = this.userNotification.bind(this);
     this.socket = new WebSocket('ws://localhost:3001/');
   }
 
+//Add message function that sets the state and sends the message/username to the server from chat bar
 
   addNewMessage(username, content) {
     const newMessage = { type: "postMessage", username: username, content: content };
@@ -25,16 +31,24 @@ class App extends Component {
     this.socket.send(JSON.stringify(newMessage))
   }
 
+//User notification function that sets the state and sends the new user and old user to the server
+
   userNotification(newUser) {
     const notification = { type: "postNotification", oldUser: this.state.currentUser.name, newUser: newUser };
     this.setState({currentUser:{name: newUser}})
     this.socket.send(JSON.stringify(notification))
   }
 
+//Handles the server -> client handshake
+
   componentDidMount() {
     this.socket.onopen = (e) => {
       console.log('Connected to server');
     };
+
+//Handles the on message from the server and the different types of cases
+//Last life cycle before render
+
     this.socket.onmessage = (e) => {
       const data = JSON.parse(e.data);
       switch (data.type) {
@@ -44,7 +58,6 @@ class App extends Component {
           break;
         case "incomingNotification":
           const notifications = this.state.messages.concat(data);
-          console.log('it works')
           this.setState({ messages: notifications })
           break;
         case "userCount":
@@ -63,10 +76,13 @@ class App extends Component {
 
   render() {
     return (
+  
+//includes the state to allow each component to use them 
+
       <div>
         <ChatBar currentUser={this.state.currentUser} addNewMessage={this.addNewMessage} userNotification={this.userNotification} />
-        <MessageList messages={this.state.messages} />
-        <Navbar count={this.state.count}/>
+        <MessageList messages={this.state.messages}/>
+        <Navbar count={this.state.count} />
       </div>
     );
   }
