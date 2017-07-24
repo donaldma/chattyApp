@@ -11,7 +11,7 @@ class App extends Component {
     this.state = {
       currentUser: { name: 'Bob' },
       messages: [],
-      count: 0,
+      usersCount: 0,
     };
 
 // binds the functions addNewMessage and userNotification
@@ -47,8 +47,6 @@ class App extends Component {
     };
 
 //Handles the on message from the server and the different types of cases
-//Last life cycle before render
-
     this.socket.onmessage = (e) => {
       const data = JSON.parse(e.data);
       switch (data.type) {
@@ -61,7 +59,7 @@ class App extends Component {
           this.setState({ messages: notifications })
           break;
         case "userCount":
-          const count = this.state.count
+          const count = this.state.usersCount
           this.setState({count: data.count})
           break;
         default:
@@ -82,7 +80,7 @@ class App extends Component {
       <div>
         <ChatBar currentUser={this.state.currentUser} addNewMessage={this.addNewMessage} userNotification={this.userNotification} />
         <MessageList messages={this.state.messages}/>
-        <Navbar count={this.state.count} />
+        <Navbar usersCount={this.state.usersCount} />
       </div>
     );
   }

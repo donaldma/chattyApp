@@ -3,9 +3,6 @@ import Message from './Message.jsx';
 import Notification from './Notification.jsx'
 
 class MessageList extends Component {
-  ComponentDidMount(){
-    console.log(this.props.messages);
-  } 
   render() {
     return (
     <main className="messages">
